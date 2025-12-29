@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-// ✅ STEP 1: Define the URL once so it works everywhere
-const BASE_URL = import.meta.env.VITE_API_URL 
-    ? `${import.meta.env.VITE_API_URL}/api/`
-    : 'http://192.168.1.5:8000/api/';
+// ✅ SMART SWITCH:
+// If running on your laptop (localhost), use your local IP.
+// If running on Vercel (internet), use the Render Backend.
+const BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://192.168.1.5:8000/api/'
+    : 'https://gym-management-system-mudh.onrender.com/api/';
 
 // 1. Create the Instance
 const api = axios.create({
@@ -42,7 +44,7 @@ api.interceptors.response.use(
 
             if (refreshToken) {
                 try {
-                    // ✅ FIXED: Now uses the correct BASE_URL instead of 192.168...
+                    // ✅ FIXED: Uses the dynamic BASE_URL to refresh the token
                     const response = await axios.post(`${BASE_URL}token/refresh/`, {
                         refresh: refreshToken
                     });
@@ -58,7 +60,7 @@ api.interceptors.response.use(
                 } catch (refreshError) {
                     console.error("Session expired. Please login again.");
                     localStorage.clear();
-                    window.location.href = '/login'; // Or navigate('/')
+                    window.location.href = '/login'; 
                 }
             } else {
                 localStorage.clear();

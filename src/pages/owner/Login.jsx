@@ -8,31 +8,27 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    // ✅ FIX: Get the Live URL from Vercel, or use local if testing on laptop
-    // const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.5:8000';
-    // Temporary hardcode to fix login
-    const API_URL = 'https://gym-management-system-mudh.onrender.com';
 
-    // ✅ FIX 1: remove `e`, remove preventDefault
+    // ✅ SMART SWITCH: Automatically detects if you are on Laptop or Vercel
+    // If browser says "localhost" -> use local IP (192.168.1.5)
+    // If browser says "vercel.app" -> use Render Backend
+    const API_URL = window.location.hostname === 'localhost' 
+        ? 'http://192.168.1.5:8000' 
+        : 'https://gym-management-system-mudh.onrender.com';
+
     const handleLogin = async () => {
         setLoading(true);
         setError('');
 
         try {
-            // ✅ FIX 2: use SAME IP as QR (NOT 127.0.0.1)
-            // const response = await axios.post(
-            //     'http://192.168.1.5:8000/api/token/',
-            //     { username, password },
-            //     { headers: { 'Content-Type': 'application/json' } }
-            // );
-            // ✅ FIX: Use the variable API_URL instead of hardcoded IP
+            // ✅ Uses the smart API_URL variable defined above
             const response = await axios.post(
                 `${API_URL}/api/token/`, 
                 { username, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
 
-            // ✅ tokens stored correctly
+            // ✅ Tokens stored correctly
             localStorage.setItem('access', response.data.access);
             localStorage.setItem('refresh', response.data.refresh);
 
@@ -73,7 +69,6 @@ const Login = () => {
                         </div>
                     )}
 
-                    {/* ❌ form submit REMOVED, UI unchanged */}
                     <div className="space-y-6">
 
                         <div className="space-y-2">
@@ -102,7 +97,6 @@ const Login = () => {
                             />
                         </div>
 
-                        {/* ✅ FIX 3: button is now explicit click */}
                         <button 
                             type="button"
                             onClick={handleLogin}
