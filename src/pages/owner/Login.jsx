@@ -18,8 +18,14 @@ const Login = () => {
 
         try {
             // ✅ FIX 2: use SAME IP as QR (NOT 127.0.0.1)
+            // const response = await axios.post(
+            //     'http://192.168.1.5:8000/api/token/',
+            //     { username, password },
+            //     { headers: { 'Content-Type': 'application/json' } }
+            // );
+            // ✅ FIX: Use the variable API_URL instead of hardcoded IP
             const response = await axios.post(
-                'http://192.168.1.5:8000/api/token/',
+                `${API_URL}/api/token/`, 
                 { username, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
