@@ -9,9 +9,9 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     // ✅ FIX: Get the Live URL from Vercel, or use local if testing on laptop
-    const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://192.168.1.5:8000' 
-    : 'https://gym-management-system-mudh.onrender.com';
+    // const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.5:8000';
+    // Temporary hardcode to fix login
+    const API_URL = 'https://gym-management-system-mudh.onrender.com';
 
     // ✅ FIX 1: remove `e`, remove preventDefault
     const handleLogin = async () => {
