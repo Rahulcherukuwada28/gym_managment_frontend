@@ -1,17 +1,13 @@
 import axios from 'axios';
 
+// ✅ STEP 1: Define the URL once so it works everywhere
+const BASE_URL = import.meta.env.VITE_API_URL 
+    ? `${import.meta.env.VITE_API_URL}/api/`
+    : 'http://192.168.1.5:8000/api/';
+
 // 1. Create the Instance
-// const api = axios.create({
-//     baseURL: 'http://192.168.1.5:8000/api/', // ✅ Your Network IP
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-// });
 const api = axios.create({
-    // ✅ Use Vercel variable if available, otherwise use your local IP
-    baseURL: import.meta.env.VITE_API_URL 
-             ? `${import.meta.env.VITE_API_URL}/api/`
-             : 'http://192.168.1.5:8000/api/',
+    baseURL: BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -46,8 +42,8 @@ api.interceptors.response.use(
 
             if (refreshToken) {
                 try {
-                    // Ask Backend for a new Access Token
-                    const response = await axios.post('http://192.168.1.5:8000/api/token/refresh/', {
+                    // ✅ FIXED: Now uses the correct BASE_URL instead of 192.168...
+                    const response = await axios.post(`${BASE_URL}token/refresh/`, {
                         refresh: refreshToken
                     });
 
@@ -62,7 +58,7 @@ api.interceptors.response.use(
                 } catch (refreshError) {
                     console.error("Session expired. Please login again.");
                     localStorage.clear();
-                    window.location.href = '/login';
+                    window.location.href = '/login'; // Or navigate('/')
                 }
             } else {
                 localStorage.clear();
