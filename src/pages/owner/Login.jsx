@@ -8,6 +8,8 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    // ✅ FIX: Get the Live URL from Vercel, or use local if testing on laptop
+    const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.5:8000';
 
     // ✅ FIX 1: remove `e`, remove preventDefault
     const handleLogin = async () => {
