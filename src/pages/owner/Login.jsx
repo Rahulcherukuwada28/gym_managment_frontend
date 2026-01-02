@@ -15,7 +15,11 @@ const Login = () => {
     // const API_URL = window.location.hostname === 'localhost' 
     //     ? 'http://192.168.1.5:8000' 
     //     : 'https://gym-management-system-mudh.onrender.com';
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API = axios.create({
+            baseURL: import.meta.env.VITE_API_BASE_URL,
+        });
+
+
 
 
     const handleLogin = async () => {
