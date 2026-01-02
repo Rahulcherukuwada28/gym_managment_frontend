@@ -12,9 +12,11 @@ const Login = () => {
     // ✅ SMART SWITCH: Automatically detects if you are on Laptop or Vercel
     // If browser says "localhost" -> use local IP (192.168.1.5)
     // If browser says "vercel.app" -> use Render Backend
-    const API_URL = window.location.hostname === 'localhost' 
-        ? 'http://192.168.1.5:8000' 
-        : 'https://gym-management-system-mudh.onrender.com';
+    // const API_URL = window.location.hostname === 'localhost' 
+    //     ? 'http://192.168.1.5:8000' 
+    //     : 'https://gym-management-system-mudh.onrender.com';
+    const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 
     const handleLogin = async () => {
         setLoading(true);
